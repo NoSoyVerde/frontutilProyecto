@@ -1,0 +1,46 @@
+/* Edit form styles aligned with blog aesthetics */
+
+:root {
+  --accent: #0d6efd;
+  --muted: #6c757d;
+  --card-border: rgba(0, 0, 0, 0.06);
+}
+
+.edit-form .form-card {
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 12px 18px rgba(16, 24, 40, 0.04);
+}
+
+.form-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.form-text {
+  font-size: .85rem;
+}
+
+input.form-control,
+textarea.form-control {
+  border-radius: 8px;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
+
+.is-valid {
+  border-color: #198754 !important;
+}
+
+button.btn-primary {
+  border-radius: 8px;
+}

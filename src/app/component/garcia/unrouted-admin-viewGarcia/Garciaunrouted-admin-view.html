@@ -1,0 +1,44 @@
+<!-- crear la tabla con oGarcia -->
+<div class="container my-4 edit-form">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="form-card">
+        <h1 class="my-5">Detalle de objetivo</h1>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="row">{{ oGarcia?.id }}</th>
+            </tr>
+            <tr>
+              <th scope="col">Título</th>
+              <td>{{ oGarcia?.titulo }}</td>
+            </tr>
+            <tr>
+              <th scope="col" class="align-middle">Objetivo</th>
+              <td>{{ oGarcia?.objetivo }}</td>
+            </tr>
+            <tr>
+              <th scope="col">Progreso</th>
+              <td>{{ oGarcia?.progreso }}</td>
+            </tr>
+            <tr>
+              <th scope="col">Comienzo</th>
+              <td>{{ oGarcia?.fechaInicio }}</td>
+            </tr>
+            <tr>
+              <th scope="col">Final</th>
+              <td>{{ oGarcia?.fechaFinal }}</td>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="my-4">
+        <a routerLink="/garcia/plist" class="btn btn-primary">
+          ← Volver
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

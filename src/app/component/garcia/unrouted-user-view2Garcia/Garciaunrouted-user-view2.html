@@ -1,0 +1,22 @@
+<div class="front-view-post d-flex flex-column flex-md-row align-items-start">
+  <div class="thumb me-3" aria-hidden>
+    <i [class]="iconClass" aria-hidden="true"></i>
+  </div>
+  <div class="content flex-fill">
+    <h1 class="title">{{ oGarcia?.titulo }}</h1>
+    <p class="excerpt">{{ oGarcia?.objetivo ?? '' | trim : 150 }}</p>
+    <div class="excerpt">
+      <a [routerLink]="['/garcia/post', oGarcia?.id]" class="btn btn-sm btn-outline-primary">Leer</a>
+    </div>
+    <div class="d-flex justify-content-end">
+      <small class="text-muted me-3">
+        Publicado el {{ oGarcia?.fechaInicio | datetime : 'solofechacompleta' }}
+        a las {{ oGarcia?.fechaFinal | datetime : 'solofechacompleta' }}
+      </small>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <small class="text-muted me-3">Progreso: {{ oGarcia?.progreso }}</small>
+    </div>
+  </div>
+</div>

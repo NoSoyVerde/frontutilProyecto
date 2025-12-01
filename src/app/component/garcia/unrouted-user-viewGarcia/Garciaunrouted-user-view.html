@@ -1,0 +1,41 @@
+<div class="container m-5 post-view">
+  <article class="post-card p-5 border rounded shadow-sm">
+    <header class="post-header my-5">
+      <h1 class="post-title">{{ oGarcia?.titulo }}</h1>
+    </header>
+
+    <section class="post-content my-5">
+      <!-- icono de comillas -->
+      <i class="bi bi-quote"></i>
+      <p [innerHTML]="oGarcia?.objetivo"></p>
+    </section>
+
+    <footer class="post-footer my-5 d-flex justify-content-between align-items-center">
+      <div class="post-meta text-muted small">
+        <span class="me-3">
+          <i class="bi bi-calendar3"></i>
+          Publicado el
+          {{ oGarcia?.fechaInicio | datetime : 'solofechacompleta' }} a las
+          {{ oGarcia?.fechaInicio | datetime : 'solofechacompleta' }}
+        </span>
+        @if (oGarcia?.fechaFinal) {
+        <span class="me-3">
+          <i class="bi bi-clock"></i>
+          Modificado el
+          {{ oGarcia?.fechaFinal | datetime : 'solofechacompleta' }} a las
+          {{ oGarcia?.fechaFinal | datetime : 'solofechacompleta' }}
+        </span>
+        }
+      </div>
+      <div class="post-meta text-muted small">
+        <span class="tags"><i class="bi bi-tags"></i> {{ oGarcia?.progreso }}</span>
+      </div>
+
+    </footer>
+    <div class="my-4">
+      <a routerLink="/garcia" class="btn btn-primary">
+        ← Volver
+      </a>
+    </div>
+  </article>
+</div>

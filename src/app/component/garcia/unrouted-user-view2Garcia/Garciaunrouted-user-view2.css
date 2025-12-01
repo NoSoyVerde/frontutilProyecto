@@ -1,0 +1,41 @@
+/* Style for Bootstrap icon <i class="bi ..."> */
+.front-view-post .thumb i {
+	width: 200px;
+	height: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 44px;
+	border-radius: 8px;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	background: #f8f9fa;
+	color: #111;
+}
+
+.front-view-post .title {
+	margin: 0 0 0.25rem 0;
+	font-size: 1.7rem;
+	font-weight: 600;
+}
+
+.front-view-post .excerpt {
+	margin: 20px 30px;
+	color: var(--muted, #3d5e7a);
+}
+
+.front-view-post .actions a {
+	text-decoration: none
+}
+
+@media (max-width:767.98px) {
+	.front-view-post .thumb img {
+		width: 100%;
+		height: auto;
+		border-radius: 8px;
+	}
+
+	.front-view-post {
+		flex-direction: column;
+		gap: 0.5rem
+	}
+}

@@ -1,0 +1,106 @@
+<div class="container my-4 new-form">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="form-card">
+        <header class="form-header mb-4">
+          <h1 class="form-title">Crear Nuevo Objetivo</h1>
+          <p class="text-muted small">Completa los campos para crear un nuevo objetivo</p>
+        </header>
+
+        @if (error) {
+        <div class="alert alert-danger" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+        </div>
+        }
+
+        <form [formGroup]="garciaForm" (ngSubmit)="onSubmit()" novalidate>
+          <!-- Título -->
+          <div class="mb-4">
+            <label for="titulo" class="form-label">Título <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" [class.is-invalid]="titulo?.invalid && titulo?.touched"
+              [class.is-valid]="titulo?.valid && titulo?.touched" id="titulo" formControlName="titulo"
+              placeholder="Introduce el título del post" />
+            @if (titulo?.invalid && titulo?.touched) {
+            <div class="invalid-feedback">
+              @if (titulo?.errors?.['required']) {
+              <span>El título es obligatorio.</span>
+              }
+              @if (titulo?.errors?.['minlength']) {
+              <span>El título debe tener al menos 3 caracteres.</span>
+              }
+              @if (titulo?.errors?.['maxlength']) {
+              <span>El título no puede superar 200 caracteres.</span>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Objetivo -->
+          <div class="mb-4">
+            <label for="objetivo" class="form-label">Objetivo <span class="text-danger">*</span></label>
+            <textarea class="form-control" [class.is-invalid]="objetivo?.invalid && objetivo?.touched"
+              [class.is-valid]="objetivo?.valid && objetivo?.touched" id="objetivo" formControlName="objetivo" rows="8"
+              placeholder="Escribe el objetivo del post"></textarea>
+            @if (objetivo?.invalid && objetivo?.touched) {
+            <div class="invalid-feedback">
+              @if (objetivo?.errors?.['required']) {
+              <span>El objetivo es obligatorio.</span>
+              }
+              @if (objetivo?.errors?.['minlength']) {
+              <span>El objetivo debe tener al menos 10 caracteres.</span>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Progreso -->
+          <div class="mb-4">
+            <label for="progreso" class="form-label">Progreso</label>
+            <input type="text" class="form-control" [class.is-invalid]="progreso?.invalid && progreso?.touched"
+              [class.is-valid]="progreso?.valid && progreso?.touched" id="progreso" formControlName="progreso"
+              placeholder="progreso separadas por comas" />
+            @if (progreso?.invalid && progreso?.touched) {
+            <div class="invalid-feedback">
+              @if (progreso?.errors?.['maxlength']) {
+              <span>Las progreso no pueden superar 100 caracteres.</span>
+              }
+            </div>
+            }
+            <small class="form-text text-muted">Ejemplo: angular, typescript, web</small>
+          </div>
+
+          <!-- Fecha Final -->
+          <div class="mb-4">
+            <label for="fechaFinal" class="form-label">Fecha Final <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" [class.is-invalid]="fechaFinal?.invalid && fechaFinal?.touched"
+              [class.is-valid]="fechaFinal?.valid && fechaFinal?.touched" id="fechaFinal"
+              formControlName="fechaFinal" />
+            @if (fechaFinal?.invalid && fechaFinal?.touched) {
+            <div class="invalid-feedback">
+              @if (fechaFinal?.errors?.['required']) {
+              <span>La fecha final es obligatoria.</span>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Botones -->
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <a [routerLink]="['/garcia/plist']" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-left me-2"></i>Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary" [disabled]="submitting || garciaForm.invalid">
+              @if (submitting) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              }
+              @if (!submitting) {
+              <i class="bi bi-plus-circle me-2"></i>
+              }
+              Crear Objetivo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
