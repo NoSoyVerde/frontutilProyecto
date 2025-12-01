@@ -1,0 +1,82 @@
+<div class="container my-4 new-form">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="form-card">
+        <header class="form-header mb-4">
+          <h1 class="form-title">Nueva respuesta</h1>
+          <p class="text-muted small">Pregunta: &iquest;Que aspectos mejorarias del instituto Ausias March?</p>
+        </header>
+
+        @if (error) {
+        <div class="alert alert-danger" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+        </div>
+        }
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+          <div class="mb-4">
+            <label for="autor" class="form-label">Autor <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              [class.is-invalid]="autor?.invalid && autor?.touched"
+              [class.is-valid]="autor?.valid && autor?.touched"
+              id="autor"
+              formControlName="autor"
+              placeholder="Tu nombre o alias"
+            />
+            @if (autor?.invalid && autor?.touched) {
+            <div class="invalid-feedback">
+              @if (autor?.errors?.['required']) { <span>El autor es obligatorio.</span> }
+              @if (autor?.errors?.['minlength']) { <span>Minimo 3 caracteres.</span> }
+              @if (autor?.errors?.['maxlength']) { <span>Maximo 128 caracteres.</span> }
+            </div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label for="contenido" class="form-label">Respuesta <span class="text-danger">*</span></label>
+            <textarea
+              class="form-control"
+              [class.is-invalid]="contenido?.invalid && contenido?.touched"
+              [class.is-valid]="contenido?.valid && contenido?.touched"
+              id="contenido"
+              formControlName="contenido"
+              rows="6"
+              placeholder="Escribe tu opinion"
+            ></textarea>
+            @if (contenido?.invalid && contenido?.touched) {
+            <div class="invalid-feedback">
+              @if (contenido?.errors?.['required']) { <span>El contenido es obligatorio.</span> }
+              @if (contenido?.errors?.['minlength']) { <span>Minimo 3 caracteres.</span> }
+              @if (contenido?.errors?.['maxlength']) { <span>Maximo 4096 caracteres.</span> }
+            </div>
+            }
+          </div>
+
+          <div class="form-check form-switch mb-4">
+            <input class="form-check-input" type="checkbox" role="switch" id="publicado" formControlName="publicado">
+            <label class="form-check-label" for="publicado">Publicado</label>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <a [routerLink]="['/alfonso/plist']" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-left me-2"></i>Cancelar
+            </a>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="submitting || form.invalid"
+            >
+              @if (submitting) {
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              }
+              @if (!submitting) { <i class="bi bi-send me-2"></i> }
+              Crear
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

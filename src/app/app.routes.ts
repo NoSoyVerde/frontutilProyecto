@@ -26,6 +26,13 @@ import { SoaresRoutedAdminEdit } from './component/soares/routed-admin-edit/rout
 import { SoaresRoutedAdminRemove } from './component/soares/routed-admin-remove/routed-admin-remove';
 import { SoaresRoutedUserPlist } from './component/soares/routed-user-plist/routed-user-plist';
 import { PreguntasPorTemaComponent } from './component/soares/preguntas-por-tema/preguntas-por-tema';
+import { RoutedAlfonsoAdminPlist } from './component/alfonso/routed-admin-plist/routed-admin-plist';
+import { RoutedAlfonsoAdminView } from './component/alfonso/routed-admin-view/routed-admin-view';
+import { RoutedAlfonsoAdminNew } from './component/alfonso/routed-admin-new/routed-admin-new';
+import { RoutedAlfonsoAdminEdit } from './component/alfonso/routed-admin-edit/routed-admin-edit';
+import { RoutedAlfonsoAdminRemove } from './component/alfonso/routed-admin-remove/routed-admin-remove';
+import { RoutedAlfonsoUserPlist } from './component/alfonso/routed-user-plist/routed-user-plist';
+import { RoutedAlfonsoUserView } from './component/alfonso/routed-user-view/routed-user-view';
 
 //imports Alan
 import { RoutedAlcanyizMenu } from './component/alcanyiz/routed-alcanyiz-menu/routed-alcanyiz-menu'
@@ -47,6 +54,13 @@ export const routes: Routes = [
   { path: 'blog/new', component: RoutedAdminNew },
   { path: 'blog/edit/:id', component: RoutedAdminEdit },
   { path: 'blog/remove/:id', component: RoutedAdminRemove },
+  { path: 'alfonso', component: RoutedAlfonsoUserPlist },
+  { path: 'alfonso/respuesta/:id', component: RoutedAlfonsoUserView },
+  { path: 'alfonso/plist', component: RoutedAlfonsoAdminPlist },
+  { path: 'alfonso/view/:id', component: RoutedAlfonsoAdminView },
+  { path: 'alfonso/new', component: RoutedAlfonsoAdminNew },
+  { path: 'alfonso/edit/:id', component: RoutedAlfonsoAdminEdit },
+  { path: 'alfonso/remove/:id', component: RoutedAlfonsoAdminRemove },
   { path: 'alcalde', component: AlcaldeRoutedUserPlist },
   { path: 'alcalde/post/:id', component: AlcaldeRoutedUserView },
   { path: 'alcalde/plist', component: AlcaldeRoutedAdminPlist },

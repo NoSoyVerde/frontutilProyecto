@@ -1,0 +1,30 @@
+@if (loading) {
+<div class="alert alert-info text-center my-3">Cargando...</div>
+} @else if (error) {
+<div class="alert alert-danger text-center my-3">{{ error }}</div>
+} @else {
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="card border-danger shadow-sm">
+        <div class="card-header bg-danger text-white">
+          <i class="bi bi-exclamation-triangle me-2"></i>Confirmar borrado
+        </div>
+        <div class="card-body">
+          <p class="text-muted">Se eliminar&aacute; la respuesta de forma permanente.</p>
+          <app-alfonso-unrouted-admin-view [oRespuesta]="oRespuesta"></app-alfonso-unrouted-admin-view>
+          <div class="d-flex justify-content-end gap-2 mt-3">
+            <button class="btn btn-secondary btn-sm" (click)="cancel()">Cancelar</button>
+            <button class="btn btn-danger btn-sm" [disabled]="deleting" (click)="confirmDelete()">
+              @if (deleting) {
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              }
+              Borrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

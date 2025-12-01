@@ -1,0 +1,45 @@
+<div class="container my-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h2 class="h5 mb-0">Detalle de respuesta</h2>
+        </div>
+        <div class="card-body">
+          <table class="table table-sm">
+            <tbody>
+              <tr>
+                <th scope="col">ID</th>
+                <td>{{ oRespuesta?.id }}</td>
+              </tr>
+              <tr>
+                <th scope="col">Autor</th>
+                <td>{{ oRespuesta?.autor }}</td>
+              </tr>
+              <tr>
+                <th scope="col">Publicado</th>
+                <td>
+                  <span class="badge" [ngClass]="oRespuesta?.publicado ? 'text-bg-success' : 'text-bg-secondary'">
+                    {{ oRespuesta?.publicado ? 'Publicado' : 'Oculto' }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <th scope="col">Contenido</th>
+                <td class="text-pre-wrap">{{ oRespuesta?.contenido }}</td>
+              </tr>
+              <tr>
+                <th scope="col">Creaci&oacute;n</th>
+                <td>{{ oRespuesta?.fechaCreacion }}</td>
+              </tr>
+              <tr>
+                <th scope="col">Actualizaci&oacute;n</th>
+                <td>{{ oRespuesta?.fechaModificacion }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

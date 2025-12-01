@@ -1,0 +1,7 @@
+@if (loading) {
+<div class="alert alert-info text-center my-3">Cargando...</div>
+} @else if (error) {
+<div class="alert alert-danger text-center my-3">{{ error }}</div>
+} @else {
+<app-alfonso-unrouted-admin-view [oRespuesta]="oRespuesta"></app-alfonso-unrouted-admin-view>
+}

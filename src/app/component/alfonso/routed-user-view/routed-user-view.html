@@ -1,0 +1,22 @@
+<div class="container my-4">
+  @if (loading) {
+  <div class="alert alert-info text-center">Cargando...</div>
+  } @else if (error) {
+  <div class="alert alert-danger text-center">{{ error }}</div>
+  } @else {
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+          <h1 class="h4 mb-1">{{ oRespuesta?.autor }}</h1>
+          <div class="text-muted small">{{ oRespuesta?.fechaCreacion | datetime }}</div>
+        </div>
+        <span class="badge" [ngClass]="oRespuesta?.publicado ? 'text-bg-success' : 'text-bg-secondary'">
+          {{ oRespuesta?.publicado ? 'Publicado' : 'Oculto' }}
+        </span>
+      </div>
+      <p class="lead">{{ oRespuesta?.contenido }}</p>
+    </div>
+  </div>
+  }
+</div>

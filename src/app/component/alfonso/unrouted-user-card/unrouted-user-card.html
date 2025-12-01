@@ -1,0 +1,15 @@
+<div class="respuesta-card">
+  <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+    <div>
+      <div class="autor fw-semibold">{{ respuesta.autor }}</div>
+      <div class="meta text-muted small">{{ respuesta.fechaCreacion | datetime }}</div>
+    </div>
+    <span class="badge" [ngClass]="respuesta.publicado ? 'text-bg-success' : 'text-bg-secondary'">
+      {{ respuesta.publicado ? 'Publicado' : 'Oculto' }}
+    </span>
+  </div>
+  <p class="contenido mb-2">{{ respuesta.contenido }}</p>
+  <a class="text-decoration-none small" [routerLink]="['/alfonso/respuesta', respuesta.id]">
+    Leer detalle <i class="bi bi-arrow-right-short"></i>
+  </a>
+</div>

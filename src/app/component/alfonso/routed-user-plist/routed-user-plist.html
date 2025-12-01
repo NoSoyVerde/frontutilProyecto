@@ -1,0 +1,34 @@
+<div class="container my-4 alfonso-plist">
+  <div class="hero mb-4">
+    <div>
+      <p class="badge text-bg-dark mb-2">Encuesta abierta</p>
+      <h1 class="h3 mb-1">Pregunta: &iquest;Que aspectos mejorarias del instituto Ausias March?</h1>
+      <p class="text-muted mb-0">Deja tu propuesta para que la tengamos en cuenta.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-light btn-sm" href="/alfonso/plist">
+        <i class="bi bi-gear-fill me-2"></i>Administrar
+      </a>
+      <a class="btn btn-light btn-sm" href="/alfonso/new">
+        <i class="bi bi-plus-circle me-2"></i>Responder
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    @for (respuesta of oPage?.content; track respuesta.id ) {
+    <div class="col-12 col-md-6 col-xl-4">
+      <app-alfonso-user-card [respuesta]="respuesta"></app-alfonso-user-card>
+    </div>
+    }
+  </div>
+
+  <div class="d-flex justify-content-center mt-4">
+    <app-paginacion
+      [numPage]="numPage"
+      [numPages]="oPage?.totalPages || 1"
+      (pageChange)="goToPage($event)"
+    >
+    </app-paginacion>
+  </div>
+</div>
