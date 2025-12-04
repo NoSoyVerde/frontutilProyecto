@@ -1,0 +1,50 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+  <div class="mb-4">
+    <label for="username" class="form-label">Username</label>
+    <input
+      type="text"
+      class="form-control"
+      [class.is-invalid]="username?.invalid && username?.touched"
+      [class.is-valid]="username?.valid && username?.touched"
+      id="username"
+      formControlName="username"
+    />
+    @if (username?.invalid && username?.touched) {
+    <div class="invalid-feedback">
+      @if (username?.errors?.['required']) {
+        <span>Username es obligatorio.</span>
+      }
+      @if (username?.errors?.['minlength']) {
+        <span>Username debe tener al menos 3 caracteres.</span>
+      }
+      @if (username?.errors?.['maxlength']) {
+        <span>Username no puede superar 255 caracteres.</span>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="mb-4">
+    <label for="password" class="form-label">Password</label>
+    <input
+      type="password"
+      class="form-control"
+      [class.is-invalid]="password?.invalid && password?.touched"
+      [class.is-valid]="password?.valid && password?.touched"
+      id="password"
+      formControlName="password"
+    >
+    @if (password?.invalid && password?.touched) {
+    <div class="invalid-feedback">
+      @if (password?.errors?.['required']) {
+        <span>El password es obligatorio.</span>
+      }
+      @if (password?.errors?.['minlength']) {
+        <span>El password debe tener al menos 25 caracteres.</span>
+      }
+    </div>
+    }
+  </div>
+
+  <button type="submit">Submit</button>
+</form>

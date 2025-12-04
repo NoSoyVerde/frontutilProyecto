@@ -1,5 +1,8 @@
 import { Routes } from '@angular/router';
 import { Home } from './component/shared/home/home';
+
+import { LoginComponent } from './component/shared/login/login.component'
+
 import { RoutedAdminPlist } from './component/blog/routed-admin-plist/routed-admin-plist';
 import { RoutedAdminView } from './component/blog/routed-admin-view/routed-admin-view';
 import { RoutedUserPlist } from './component/blog/routed-user-plist/routed-user-plist';
@@ -20,7 +23,7 @@ import { RoutedAdminRemove as RoutedAdminRemoveSilvestre } from './component/sil
 import { RoutedAdminPlist as RoutedAdminPlistSilvestre } from './component/silvestre/routed-admin-plist/routed-admin-plist';
 import { RoutedAdminView as RoutedAdminViewSilvestre } from './component/silvestre/routed-admin-view/routed-admin-view';
 import { RoutedUserPlist as RoutedUserPlistSilvestre } from './component/silvestre/routed-user-plist/routed-user-plist';
-import { RoutedUserView as RoutedUserViewSilvestre } from './component/silvestre/routed-user-view/routed-user-view';  
+import { RoutedUserView as RoutedUserViewSilvestre } from './component/silvestre/routed-user-view/routed-user-view';
 import { UskiVisitasPage } from './component/uski/pages/visitas/visitas.page';
 import { UskiAdminPage } from './component/uski/pages/admin/admin.page';
 import { UskiAdminRemovePage } from './component/uski/pages/admin-remove/admin-remove.page';
@@ -161,6 +164,8 @@ export const routes: Routes = [
   { path: 'silvestre/new', component: RoutedAdminNewSilvestre },
   { path: 'silvestre/edit/:id', component: RoutedAdminEditSilvestre },
   { path: 'silvestre/remove/:id', component: RoutedAdminRemoveSilvestre },
+
+  { path: 'login', component: LoginComponent },
 
   // Vladislav Uski
   // public
