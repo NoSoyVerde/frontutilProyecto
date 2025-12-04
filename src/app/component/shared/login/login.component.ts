@@ -28,16 +28,8 @@ export class LoginComponent implements OnInit {
 
   initForm(): void {
     this.loginForm = this.fb.group({
-      username: ['', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(255)
-      ]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(1024)
-      ]]
+      username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(255)]],
+      password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(1024)]],
     });
   }
 
@@ -48,21 +40,27 @@ export class LoginComponent implements OnInit {
     }
 
     this.submitting = true;
-    const payload: Partial<LoginType> = {
-      username: this.loginForm.value.username,
-      password: this.loginForm.value.password,
-    };
 
-    this.loginService.create(payload).subscribe({
-      next: () => {
-        this.submitting = true;
-        this.router.navigate(['']);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.submitting = false;
-        this.error = 'Error al login';
-        console.error(err);
-      },
+    this.loginService.sha256(this.loginForm.value.password).then((hash) => {
+      console.log('SHA256:', hash);
+      const payload: Partial<LoginType> = {
+        username: this.loginForm.value.username,
+        password: hash,
+      };
+
+      this.loginService.create(payload).subscribe({
+        next: (data: string) => {
+          this.submitting = true;
+          console.log('Login successful, token: ', data);
+
+          this.router.navigate(['']);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.submitting = false;
+          this.error = 'Error al login';
+          console.error(err);
+        },
+      });
     });
   }
 
