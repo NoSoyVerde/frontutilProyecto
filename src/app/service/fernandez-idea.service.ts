@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { serverURL } from '../environment/environment';
+import { serverURL, debug } from '../environment/environment';
 import { IPage } from '../model/plist';
 import { IFernandezIdea } from '../model/fernandez-idea';
 import { Observable, forkJoin, map } from 'rxjs';
@@ -33,17 +33,13 @@ export class FernandezIdeaService {
     }
 
     const pageRequest$ = this.http.get<IPage<IFernandezIdea>>(serverURL + '/idea', { params });
-  // Debug: log the request params so we can verify 'search' is being sent
-  console.debug('FernandezIdeaService.getPage params:', params.toString(), 'url:', serverURL + '/idea');
     // Si se pasa 'publico' pedimos el conteo filtrado; si no, pedimos el conteo general
-  const countRequest$ = this.count(publico, search, categoria);
+    const countRequest$ = this.count(publico, search, categoria);
 
     return forkJoin([pageRequest$, countRequest$]).pipe(
       map(([pageData, countPublic]) => {
         // Defensive: ensure content is an array so templates won't break
         pageData.content = pageData.content || [];
-        // Debug extra: log sizes so we can trace why no items are shown
-        console.debug('FernandezIdeaService.getPage response - content.length:', pageData.content.length, 'countPublic:', countPublic, 'params:', params.toString());
         // Filtrado defensivo: eliminar cualquier idea privada que el backend haya devuelto por error cuando se pidió publico=true
         if (publico === true) {
           pageData.content = pageData.content.filter((i: IFernandezIdea) => i.publico);

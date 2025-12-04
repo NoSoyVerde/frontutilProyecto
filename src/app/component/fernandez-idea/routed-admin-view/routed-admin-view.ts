@@ -4,6 +4,7 @@ import { FernandezIdeaService } from '../../../service/fernandez-idea.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FernandezUnroutedAdminView } from "../unrouted-admin-view/unrouted-admin-view";
+import { debug } from '../../../environment/environment';
 
 @Component({
   selector: 'app-fernandez-routed-admin-view',
@@ -22,7 +23,7 @@ export class FernandezRoutedAdminView {
     const idParam = this.route.snapshot.paramMap.get('id');
     const ideaId = idParam ? Number(idParam) : NaN;
     if (isNaN(ideaId)) {
-      console.error('Invalid idea id:', idParam);
+      if (debug) console.error('Invalid idea id:', idParam);
       return;
     }
     this.getIdea(ideaId);
@@ -36,7 +37,7 @@ export class FernandezRoutedAdminView {
         this.oIdea = data;
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Error fetching idea:', error);
+        if (debug) console.error('Error fetching idea:', error);
       },
     });
   }

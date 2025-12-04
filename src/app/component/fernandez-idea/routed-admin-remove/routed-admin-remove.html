@@ -15,25 +15,36 @@
 
       <app-fernandez-unrouted-admin-view [oIdea]="oIdea"> </app-fernandez-unrouted-admin-view>
 
-      <div class="confirm-box p-4 border rounded bg-light">
-        <h2 class="h5 mb-3">Confirmar borrado</h2>
-        <p class="text-muted mb-4">
-          ¿Seguro que deseas borrar esta idea? Esta acción no se puede deshacer.
-        </p>
-        <div class="d-flex justify-content-between">
-          <button class="btn btn-outline-secondary" (click)="cancel()">
+      <div class="confirm-box p-4 border-start border-5 border-danger bg-danger bg-opacity-10 rounded my-4">
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-exclamation-triangle-fill text-danger fs-4 me-3"></i>
+          <h2 class="h5 mb-0">Confirmar Borrado Permanente</h2>
+        </div>
+        <div class="bg-white p-3 rounded mb-3 border-start border-3 border-danger">
+          <p class="mb-0 fw-semibold text-danger small">
+            Idea a borrar: <span class="font-monospace">"{{ oIdea.titulo }}"</span> (ID: {{ oIdea.id }})
+          </p>
+        </div>
+        <div class="alert alert-danger mb-3">
+          <p class="mb-0">
+            <strong>⚠️ Advertencia:</strong> Esta acción no se puede deshacer. La idea y todos sus datos serán eliminados permanentemente.
+          </p>
+        </div>
+        <div class="d-flex justify-content-between gap-2">
+          <button class="btn btn-outline-secondary" (click)="cancel()" [disabled]="deleting" title="Volver a la lista sin borrar">
             <i class="bi bi-arrow-left me-2"></i>Cancelar
           </button>
-          <button class="btn btn-danger" [disabled]="deleting" (click)="confirmDelete()">
+          <button class="btn btn-danger" [disabled]="deleting" (click)="confirmDelete()" title="Eliminar permanentemente esta idea">
             @if (deleting) {
             <span
               class="spinner-border spinner-border-sm me-2"
               role="status"
               aria-hidden="true"
             ></span>
-            } @if (!deleting) {
-            <i class="bi bi-trash me-2"></i>
-            } Borrar Definitivamente
+            Borrando...
+            } @else {
+            <i class="bi bi-trash me-2"></i>Borrar Definitivamente
+            }
           </button>
         </div>
       </div>

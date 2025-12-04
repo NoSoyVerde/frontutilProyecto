@@ -6,7 +6,7 @@ import { IFernandezIdea } from '../../../model/fernandez-idea';
 import { FernandezIdeaService } from '../../../service/fernandez-idea.service';
 import { Paginacion } from "../../shared/paginacion/paginacion";
 import { BotoneraRpp } from "../../shared/botonera-rpp/botonera-rpp";
-import { firstValueFrom } from 'rxjs';
+import { debug } from '../../../environment/environment';
 
 @Component({
   selector: 'app-fernandez-routed-admin-plist',
@@ -26,6 +26,8 @@ export class FernandezRoutedAdminPlist {
   orderField: string = 'fechaCreacion';
   orderDirection: string = 'desc';
   private searchTimer: any = null;
+  // Store all ideas locally for client-side filtering
+  private allIdeas: IFernandezIdea[] = [];
   // Bulk creation UI state
   showBulkWarning: boolean = false;
   pendingBulkAmount: number | null = null;
@@ -33,115 +35,84 @@ export class FernandezRoutedAdminPlist {
   isBulkLoading: boolean = false;
 
   ngOnInit() {
-    this.getPage();
+    this.loadAllIdeas();
   }
 
   /**
-   * Scan all pages (up to a cap) to compute total matching records for the active search (admin view).
+   * Load all ideas once from the server (no pagination, no filtering)
    */
-  private async scanAndUpdateTotals(serverTotalPages: number | undefined, publico: boolean | undefined) {
-    if (!this.searchTerm || this.searchTerm.trim() === '') return;
-    const totalPagesToScan = Math.min((serverTotalPages && serverTotalPages > 0) ? serverTotalPages : 200, 500);
-    if (totalPagesToScan <= 0) return;
-    console.debug('Admin scanAndUpdateTotals: scanning', totalPagesToScan, 'pages for term:', this.searchTerm);
-    let totalMatches = 0;
-    const q = this.searchTerm.toLowerCase();
-    for (let p = 0; p < totalPagesToScan; p++) {
-      try {
-        const pageData = await firstValueFrom(this.oIdeaService.getPage(p, this.numRpp, this.orderField, this.orderDirection, publico, this.searchTerm, this.categoriaFilter));
-        const matches = (pageData.content || []).filter(i => {
-          const title = (i.titulo || '').toLowerCase();
-          const desc = (i.comentario || '').toLowerCase();
-          return title.includes(q) || desc.includes(q);
-        }).length;
-        totalMatches += matches;
-      } catch (err: unknown) {
-        console.error('Admin scanAndUpdateTotals: error fetching page', p, err);
-        break;
-      }
-    }
-    if (this.oPage) {
-      this.oPage.totalElements = totalMatches;
-      this.oPage.totalPages = Math.max(1, Math.ceil(totalMatches / this.numRpp));
-      console.debug('Admin scanAndUpdateTotals: totalMatches=', totalMatches, 'totalPages=', this.oPage.totalPages);
-    }
-  }
-
-  getPage() {
-  this.oIdeaService.getPage(this.numPage, this.numRpp, this.orderField, this.orderDirection, undefined, this.searchTerm, this.categoriaFilter).subscribe({
+  private loadAllIdeas() {
+    // Request page 0 with huge size to get all ideas at once
+    this.oIdeaService.getPage(0, 10000, 'id', 'asc', undefined, undefined, 'ALL').subscribe({
       next: (data: IPage<IFernandezIdea>) => {
-        // Debug: log search term and incoming page size
-        console.debug('Admin getPage - searchTerm:', this.searchTerm, 'received items:', data.content?.length);
-        // If there is an active search term, collect ALL matching records across pages (up to a cap)
-        if (this.searchTerm && this.searchTerm.trim() !== '') {
-          (async () => {
-            try {
-              const matches = await this.collectAllMatches(data.totalPages, undefined);
-              const totalMatches = matches.length;
-              const totalPages = Math.max(1, Math.ceil(totalMatches / this.numRpp));
-              const start = this.numPage * this.numRpp;
-              const pageSlice = matches.slice(start, start + this.numRpp);
-              const result: IPage<IFernandezIdea> = {
-                ...data,
-                content: pageSlice,
-                totalElements: totalMatches,
-                totalPages: totalPages,
-                size: this.numRpp,
-                number: this.numPage,
-              };
-              this.oPage = result;
-            } catch (err) {
-              console.error('Error collecting matches for admin search:', err);
-              // fallback: show server page (possibly filtered)
-              this.oPage = data;
-            }
-          })();
-        } else {
-          this.oPage = data;
-        }
-        // si estamos en una página que supera el límite entonces nos situamos en la ultima disponible
-        // If the currently requested page index is out of range relative to the current pagination totals,
-        // adjust to the last available page. Use the oPage totals if available (they may be updated by the async collector).
-        const currentTotalPages = this.oPage?.totalPages ?? data.totalPages;
-        if (this.numPage > 0 && this.numPage >= currentTotalPages) {
-          this.numPage = Math.max(0, currentTotalPages - 1);
-          this.getPage();
-        }
+        this.allIdeas = data.content || [];
+        if (debug) console.debug(`Loaded ${this.allIdeas.length} ideas from server`);
+        this.applyFiltersAndDisplay();
       },
       error: (error: HttpErrorResponse) => {
-        console.error(error);
+        if (debug) console.error('Error loading ideas:', error);
       },
     });
   }
 
   /**
-   * Collect all matching records for the current searchTerm by scanning pages sequentially.
-   * Returns an array of matching IFernandezIdea. Uses a safe page cap to avoid overload.
+   * Apply search, filter, and sort to allIdeas and display current page
    */
-  private async collectAllMatches(serverTotalPages: number | undefined, publico: boolean | undefined): Promise<IFernandezIdea[]> {
-    const matches: IFernandezIdea[] = [];
-    if (!this.searchTerm || this.searchTerm.trim() === '') return matches;
-    const q = this.searchTerm.toLowerCase();
-    const capPages = Math.min((serverTotalPages && serverTotalPages > 0) ? serverTotalPages : 200, 500);
-    for (let p = 0; p < capPages; p++) {
-      try {
-        const pageData = await firstValueFrom(this.oIdeaService.getPage(p, this.numRpp, this.orderField, this.orderDirection, publico, this.searchTerm, this.categoriaFilter));
-        const pageMatches = (pageData.content || []).filter(i => {
-          const title = (i.titulo || '').toLowerCase();
-          const desc = (i.comentario || '').toLowerCase();
-          return title.includes(q) || desc.includes(q);
-        });
-        matches.push(...pageMatches);
-        // If server indicates fewer pages than cap, we can stop early
-        if (serverTotalPages && p >= serverTotalPages - 1) break;
-        // Small optimization: if matches already exceed a large threshold, we can stop (avoid giant arrays)
-        if (matches.length > 20000) break;
-      } catch (err) {
-        console.error('collectAllMatches: error fetching page', p, err);
-        break;
-      }
+  private applyFiltersAndDisplay() {
+    let filtered = [...this.allIdeas];
+
+    // Apply search filter
+    if (this.searchTerm && this.searchTerm.trim() !== '') {
+      const q = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(i => {
+        const title = (i.titulo || '').toLowerCase();
+        const desc = (i.comentario || '').toLowerCase();
+        return title.includes(q) || desc.includes(q);
+      });
+      if (debug) console.debug(`Search: "${this.searchTerm}" found ${filtered.length} items`);
     }
-    return matches;
+
+    // Apply categoria filter
+    if (this.categoriaFilter && this.categoriaFilter !== 'ALL') {
+      filtered = filtered.filter(i => i.categoria === this.categoriaFilter);
+    }
+
+    // Build paginated result
+    const totalElements = filtered.length;
+    const totalPages = Math.max(1, Math.ceil(totalElements / this.numRpp));
+    const start = this.numPage * this.numRpp;
+    const pageContent = filtered.slice(start, start + this.numRpp);
+
+    this.oPage = {
+      content: pageContent,
+      totalElements: totalElements,
+      totalPages: totalPages,
+      size: this.numRpp,
+      number: this.numPage,
+      numberOfElements: pageContent.length,
+      first: this.numPage === 0,
+      last: this.numPage === totalPages - 1,
+      empty: pageContent.length === 0,
+      pageable: {
+        pageNumber: this.numPage,
+        pageSize: this.numRpp,
+        sort: { sorted: false, unsorted: true, empty: true },
+        offset: start,
+        paged: true,
+        unpaged: false,
+      },
+      sort: { sorted: false, unsorted: true, empty: true },
+    };
+
+    // If current page is out of range, adjust
+    if (this.numPage > 0 && this.numPage >= totalPages) {
+      this.numPage = Math.max(0, totalPages - 1);
+      this.applyFiltersAndDisplay();
+    }
+  }
+
+  getPage() {
+    this.applyFiltersAndDisplay();
   }
 
   goToPage(numPage: number) {
@@ -235,9 +206,8 @@ export class FernandezRoutedAdminPlist {
         },
         error: (error: HttpErrorResponse) => {
           this.isBulkLoading = false;
-          // Prefer an inline message in future; keep alert for now
+          if (debug) console.error('Error bulk creating ideas:', error);
           alert('Error al crear ideas fake');
-          console.error(error);
         },
       });
     }

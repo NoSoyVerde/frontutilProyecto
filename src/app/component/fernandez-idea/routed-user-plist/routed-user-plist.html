@@ -10,21 +10,25 @@
     </div>
 
     <!-- center: pagination -->
-    <div class="toolbar-center d-flex justify-content-center align-items-center">
-      <app-paginacion
-        [numPage]="numPage"
-        [numPages]="oPage?.totalPages || 1"
-        (pageChange)="goToPage($event)"
-      ></app-paginacion>
-    </div>
+    @if ((oPage?.content?.length ?? 0) > 0) {
+      <div class="toolbar-center d-flex justify-content-center align-items-center">
+        <app-paginacion
+          [numPage]="numPage"
+          [numPages]="oPage?.totalPages || 1"
+          (pageChange)="goToPage($event)"
+        ></app-paginacion>
+      </div>
+    }
 
     <!-- right: rpp + maintenance -->
-    <div class="toolbar-right d-flex align-items-center justify-content-end gap-2">
-      <app-botonera-rpp [numRpp]="numRpp" (rppChange)="onRppChange($event)"></app-botonera-rpp>
-      <a [routerLink]="['/fernandez-idea/admin/plist']" class="btn btn-sm btn-outline-dark maintenance-btn ms-3">
-        <i class="bi bi-tools me-1"></i>Mantenimiento
-      </a>
-    </div>
+    @if ((oPage?.content?.length ?? 0) > 0) {
+      <div class="toolbar-right d-flex align-items-center justify-content-end gap-2">
+        <app-botonera-rpp [numRpp]="numRpp" (rppChange)="onRppChange($event)"></app-botonera-rpp>
+        <a [routerLink]="['/fernandez-idea/admin/plist']" class="btn btn-sm btn-outline-dark maintenance-btn ms-3" title="Acceder a mantenimiento">
+          <i class="bi bi-tools me-1"></i>Mantenimiento
+        </a>
+      </div>
+    }
   </div>
 
   <div class="row">
@@ -37,9 +41,12 @@
     }
   </div>
 
-  @if (oPage && oPage.content && oPage.content.length === 0) {
+  @if ((oPage?.content?.length ?? 0) === 0) {
     <div class="alert alert-info text-center" role="alert">
-      No hay ideas disponibles en este momento.
+      <h5 class="mb-2">No hay ideas disponibles</h5>
+      <p class="mb-0 text-muted small">
+        Intenta ajustar tus criterios de búsqueda o vuelve más tarde para ver las ideas compartidas por la comunidad.
+      </p>
     </div>
   }
 </div>

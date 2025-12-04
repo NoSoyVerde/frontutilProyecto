@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { FernandezIdeaService } from '../../../service/fernandez-idea.service';
 import { IFernandezIdea } from '../../../model/fernandez-idea';
 import { HttpErrorResponse } from '@angular/common/http';
+import { debug } from '../../../environment/environment';
 
 @Component({
   selector: 'app-fernandez-routed-admin-new',
@@ -19,9 +20,15 @@ export class FernandezRoutedAdminNew implements OnInit {
   ideaForm!: FormGroup;
   error: string | null = null;
   submitting: boolean = false;
+  formDirty: boolean = false;
 
   ngOnInit(): void {
     this.initForm();
+    
+    // Track form changes for canDeactivate guard
+    this.ideaForm.statusChanges.subscribe(() => {
+        this.formDirty = this.ideaForm.dirty;
+    });
   }
 
   initForm(): void {
@@ -57,12 +64,13 @@ export class FernandezRoutedAdminNew implements OnInit {
     this.ideaService.create(payload).subscribe({
       next: () => {
         this.submitting = false;
+        this.formDirty = false;
         this.router.navigate(['/fernandez-idea/admin/plist']);
       },
       error: (err: HttpErrorResponse) => {
         this.submitting = false;
         this.error = 'Error al crear la idea';
-        console.error(err);
+        if (debug) console.error(err);
       },
     });
   }

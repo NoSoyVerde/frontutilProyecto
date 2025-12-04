@@ -4,22 +4,22 @@
       <div class="form-card">
         <h1 class="my-5">Detalle de Idea</h1>
 
-        <table class="table">
-          <thead>
+        <table class="table table-borderless">
+          <tbody>
             <tr>
-              <th scope="col">ID</th>
-              <th scope="row">{{ oIdea()?.id }}</th>
+              <th scope="row">ID</th>
+              <td>{{ oIdea()?.id }}</td>
             </tr>
             <tr>
-              <th scope="col">Título</th>
+              <th scope="row">Título</th>
               <td>{{ oIdea()?.titulo }}</td>
             </tr>
             <tr>
-              <th scope="col" class="align-middle">Comentario</th>
+              <th scope="row" class="align-middle">Comentario</th>
               <td>{{ oIdea()?.comentario }}</td>
             </tr>
             <tr>
-              <th scope="col">Categoría</th>
+              <th scope="row">Categoría</th>
               <td>
                 <span class="badge" 
                   [class.bg-primary]="oIdea()?.categoria === 'IDEA'"
@@ -30,24 +30,24 @@
               </td>
             </tr>
             <tr>
-              <th scope="col">Público</th>
+              <th scope="row">Público</th>
               <td>
                 @if (oIdea()?.publico) {
-                  <i class="bi bi-check-circle-fill text-success"></i> Sí
+                  <i class="bi bi-check-circle-fill text-success" title="Esta idea es pública"></i> Sí
                 } @else {
-                  <i class="bi bi-x-circle-fill text-danger"></i> No
+                  <i class="bi bi-x-circle-fill text-danger" title="Esta idea es privada"></i> No
                 }
               </td>
             </tr>
             <tr>
-              <th scope="col">Fecha Creación</th>
+              <th scope="row">Fecha Creación</th>
               <td>{{ oIdea()?.fechaCreacion }}</td>
             </tr>
             <tr>
-              <th scope="col">Fecha Modificación</th>
+              <th scope="row">Fecha Modificación</th>
               <td>{{ oIdea()?.fechaModificacion }}</td>
             </tr>
-          </thead>
+          </tbody>
         </table>
       </div>
     </div>
